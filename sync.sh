@@ -167,5 +167,5 @@ else
 fi
 
 #----- cleanup
-#rm -r $TMPDIR
+rm -r $TMPDIR
 date
