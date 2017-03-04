@@ -1,4 +1,4 @@
 elvanto.api.key=<api key>
-ldap.people.location:ou=people,dc=mydomain,dc=com
-ldap.modify.params:-D "cn=admin,dc=mydomain,dc=com" -w <adminpwd> -H ldapi:///
-ldap.search.params:-Y EXTERNAL -H ldapi:///
+ldap.people.location~ou=people,dc=mydomain,dc=com
+ldap.modify.params~-D "cn=admin,dc=mydomain,dc=com" -w <adminpwd> -H ldapi:///
+ldap.search.params~-Y EXTERNAL -H ldapi:///
