@@ -1,3 +1,5 @@
+# move this into home dir of script execution account, and rename to .elvanto-ldap-sync.config
+
 elvanto.api.key=<api key>
 ldap.people.location~ou=people,dc=mydomain,dc=com
 ldap.modify.params~-D "cn=admin,dc=mydomain,dc=com" -w <adminpwd> -H ldapi:///

@@ -16,10 +16,10 @@ DIFFS1=$TMPDIR/diffs.1col
 LDIF=$TMPDIR/ldif
 LANG=en_AU.UTF-8
 
-LDAP_PEOPLE_LOC=$(awk -F~ '/ldap.people.location/ {print $2}' ~/.config)
-LDAP_MODIFY_PARAMS=$(awk -F~ '/ldap.modify.params/ {print $2}' ~/.config)
-LDAP_SEARCH_PARAMS=$(awk -F~ '/ldap.search.params/ {print $2}' ~/.config)
-API_KEY=$(awk -F= '/elvanto.api.key/ {print $2}' ~/.config)
+LDAP_PEOPLE_LOC=$(awk -F~ '/ldap.people.location/ {print $2}' ~/.elvanto-ldap-sync.config)
+LDAP_MODIFY_PARAMS=$(awk -F~ '/ldap.modify.params/ {print $2}' ~/.elvanto-ldap-sync.config)
+LDAP_SEARCH_PARAMS=$(awk -F~ '/ldap.search.params/ {print $2}' ~/.elvanto-ldap-sync.config)
+API_KEY=$(awk -F= '/elvanto.api.key/ {print $2}' ~/.elvanto-ldap-sync.config)
 
 export PATH=/usr/local/bin:/usr/bin:/bin:$PATH
 
@@ -51,7 +51,7 @@ while [[ $ON_THIS_PAGE -gt 0 && $PAGE -lt 100 ]]; do
 
    if [ "$STATUS" != "\"ok\"" ]; then
       echo elvanto returned error status :$STATUS
-      exit 9 
+      exit 9
    fi
 
    # process the raw json to extract the fields we need
@@ -62,7 +62,7 @@ while [[ $ON_THIS_PAGE -gt 0 && $PAGE -lt 100 ]]; do
       exit $RC
    fi
 
-   # turn extracted json into pipe delimited single-line-ldif 
+   # turn extracted json into pipe delimited single-line-ldif
    perl -pi -e 's/,?\"(\w+)\":/\|$1: /g ; s/^{\|// ; s/}$// ; s/\"//g' $EL_SEARCH_PAGE
 
    # remove null or empty attributes
@@ -74,7 +74,7 @@ while [[ $ON_THIS_PAGE -gt 0 && $PAGE -lt 100 ]]; do
    (( PAGE ++ ))
 done
 
-# sort to be sure of a consistent order 
+# sort to be sure of a consistent order
 sort $EL_SEARCH > $EL_SORTED
 
 #echo el_sorted
@@ -109,7 +109,7 @@ diff <(awk -F\| '/dn/ {print $1}' $EL_SORTED) <(awk -F\| '/dn/ {print $1}' $LDAP
 
 #----- straight deletes
 
-# get the right side dn's from the dn diff file and turns these dn's into a ldif delete commands. Note that we 
+# get the right side dn's from the dn diff file and turns these dn's into a ldif delete commands. Note that we
 # only need the dn to do a delete (not the full record)
 
 echo '# straight deletes' > $LDIF
@@ -126,7 +126,7 @@ echo '# straight adds' >> $LDIF
 
 grep -f <(awk '/^</ {print substr($0,3)}' $DIFFS1) $EL_SORTED | perl -pe "$REGEX_PIPE_RECORD_TO_LDIF_INS" >> $LDIF
 
-#---- modified records are deleted and added again 
+#---- modified records are deleted and added again
 
 # the sorted records are diffed and the dns already handled above are excluded. This leaves
 # us with modified records only. In the case of deletes we only need the dn. In the case of ads
