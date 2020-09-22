@@ -40,9 +40,7 @@ while [[ $ON_THIS_PAGE -gt 0 && $PAGE -lt 100 ]]; do
    ON_THIS_PAGE=$(jq '.people.on_this_page' $EL_SEARCH_PAGE_RAW)
    STATUS=$(jq '.status' $EL_SEARCH_PAGE_RAW)
 
-   echo PAGE=$PAGE ON_THIS_PAGE=$ON_THIS_PAGE
-   #echo STATUS=$STATUS
-   #echo HTTP_RC=$HTTP_RC
+   echo PAGE=$PAGE ON_THIS_PAGE=$ON_THIS_PAGE STATUS=$STATUS HTTP_RC=$HTTP_RC
 
    if [[ $HTTP_RC -gt 200 ]]; then
       echo http error: $HTTP_RC
@@ -98,7 +96,7 @@ perl -pi -e 's/\|\|/\n/g' $LDAPSEARCH
 sort $LDAPSEARCH > $LDAPSORTED
 
 #echo ldapsorted
-#cat $LDAPSORTED
+wc -l $LDAPSORTED
 
 #------ find the changed dns, which could be adds or deletes
 
