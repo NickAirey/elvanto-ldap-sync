@@ -1,0 +1,10 @@
+version: '2'
+services:
+  ldap-sync:
+    container_name: ldap-sync
+    image: ldap-sync:latest
+    logging:
+       driver: journald
+       options:
+         tag: '{{.ImageName}}'
+   network_mode: host
